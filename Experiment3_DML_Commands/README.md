@@ -62,9 +62,7 @@ WHERE quantity < 10 AND category = 'Snacks'
 ---
 ```
 Write a SQL statement to change the email column of employees table with 'Unavailable' for all employees in employees table.
-
 Employees table
-
 ---------------
 employee_id
 first_name
@@ -138,9 +136,7 @@ WHERE product_id =15 AND sale_date = '2023-01-31'
 ---
 ```
 Write a SQL statement to Increase the salary by 500 and email as 'updated' for employees with job ID 'SA_REP' and commission percentage greater than 0.15
-
 Employees table
-
 ---------------
 employee_id
 first_name
@@ -159,6 +155,7 @@ department_id
 UPDATE Employees 
 SET salary = salary + 500, email='updated'
 WHERE job_id = "SA_REP" AND commission_pct > 0.15
+```
 
 **Output:**
 
@@ -166,7 +163,8 @@ WHERE job_id = "SA_REP" AND commission_pct > 0.15
 
 
 **Question 6**
-```
+
+````
 Write a SQL query to Delete customers whose 'GRADE' is greater than 2 and have a 'PAYMENT_AMT' less than the average 'PAYMENT_AMT' for all customers, or whose 'OUTSTANDING_AMT' is greater than 8000:
 
 Sample table: Customer
@@ -177,7 +175,8 @@ Sample table: Customer
 | C00013    | Holmes      | London      | London       | UK           |     2 |     6000.00 |     5000.00 |     7000.00 |       4000.00 | BBBBBBB      | A003       |
 | C00001    | Micheal     | New York    | New York     | USA          |     2 |     3000.00 |     5000.00 |     2000.00 |       6000.00 | CCCCCCC      | A008       |
 | C00020    | Albert      | New York    | New York     | USA          |     3 |     5000.00 |     7000.00 |     6000.00 |       6000.00 | BBBBSBB      | A008       |
-```
+
+````
 
 ```sql
 delete from customer

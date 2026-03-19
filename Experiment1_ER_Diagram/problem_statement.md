@@ -1,9 +1,4 @@
-# EX-01: ER Diagram Workshop – Submission Template
-
-```
-NAME: RUBASRI R
-REG.NO: 212224240139
-```
+# ER Diagram Workshop – Submission Template
 
 ## Objective
 To understand and apply ER modeling concepts by creating ER diagrams for real-world applications.
@@ -27,67 +22,33 @@ FlexiFit Gym wants a database to manage its members, trainers, and fitness progr
 - Payments tracked for memberships and sessions.
 
 ### ER Diagram:
-*Paste or attach your diagram here*  
-<img width="706" height="346" alt="city" src="https://github.com/user-attachments/assets/2d2c740d-b895-4ade-b17c-8ee2cde9cd1f" />
+
+<img width="791" height="865" alt="Screenshot 2025-08-29 225250" src="https://github.com/user-attachments/assets/b684b060-f82e-4d63-b975-962d4dbb1c56" />
 
 
 ### Entities and Attributes
 
-## 1. MEMBER 
-o MEMBER_ID (PK) 
-o NAME 
-o MEMBERSHIP_TYPE 
-o START_DATE 
+| Entity | Attributes (PK, FK) | Notes |
+|--------|--------------------|-------|
+|    Member    |        MemberID ,Membership          |  Store member details     |
+|      Trainer  |      TrainerID,Name,Email,PhoneNumber              |     Store Trainer details  |
+|  Program      |      ProgramID,Cost              |  Programs like Zumbz/yoga     |
+|    Session    |       SessionID,SessionDate             |    Tracks attendance   |
+|    Payment    |          PaymentID,Amount          |   Tracks payments by members    |
 
-## 2. TRAINER 
-o TRAINER_ID (PK) 
-o NAME 
-o SPECIALIZATION 
-o PHONE 
-
-## 3. PROGRAM 
-o PROGRAM_ID (PK) 
-o PROGRAM_NAME 
-o DURATION 
-
-## 4. SESSION 
-o SESSION_ID (PK) 
-o DATE 
-o TIME 
-o ATTENDANCE_STATUS (implied, not explicitly shown as attribute in this 
-simplified view, but part of context) 
-
-## 5. PAYMENT 
-o PAYMENT_ID (PK) 
-o AMOUNT 
-o PAYMENT_DATE 
-o PAYMENT_TYPE (Membership / Session)
 
 ### Relationships and Constraints
 
-registers_for (M:N): Requires MEMBER_ID (FK to MEMBER) and PROGRAM_ID (FK to PROGRAM).
-
-assigned_to (M:N): Requires TRAINER_ID (FK to TRAINER) and PROGRAM_ID (FK to PROGRAM).
-
-PAYMENT (1:N): Requires MEMBER_ID (FK to MEMBER).
-
-SESSION (1:N): This table is central and requires three Foreign Keys:
-
-MEMBER_ID (FK to MEMBER)
-
-TRAINER_ID (FK to TRAINER)
-
-PROGRAM_ID (FK to PROGRAM)
+| Relationship | Cardinality | Participation | Notes |
+|--------------|------------|---------------|-------|
+|       Member-Program       |     M:N       |      Optional(Member),Mandatory(Enrollment)         | Member may or may not join programs      |
+|          Trainer-Program    |      M:N      |            Optional(Trainer),Mandatory(Assignment)   |  Trainer may or may not run Programs     |
+|       Member–Trainer       |     1:N       |        Mandatory (Session), Optional (Member/Trainer)       |    Session must have a member & trainer   |
 
 ### Assumptions
-
-- 1-to-1 Sessions: Sessions are private (one member per session).
-
-- No Co-Teaching: A session has only one trainer.
-
-- Exclusive Links: A session belongs to exactly one program. A payment comes from exactly one member.
-
-- Mandatory Links: A SESSION record cannot exist without a valid MEMBER, TRAINER, and PROGRAM (these FKs are likely NOT NULL).
+- Program = recurring class; Session = specific instance.
+- Payments cover both memberships and sessions.
+- A Session links one Member and one Trainer.
 
 ---
 
@@ -105,76 +66,36 @@ The Central Library wants to manage book lending and cultural events.
 - Overdue fines apply for late returns.
 
 ### ER Diagram:
-*Paste or attach your diagram here*  
-<img width="705" height="340" alt="2" src="https://github.com/user-attachments/assets/a956834c-0610-4396-a5fd-abcb42984f66" />
+
+<img width="728" height="852" alt="Screenshot 2025-08-29 225310" src="https://github.com/user-attachments/assets/711314cd-dd0f-44a0-a057-cbd449efdb81" />
 
 
 ### Entities and Attributes
 
-## 1. MEMBER 
-o MEMBER_ID (PK) 
-o NAME 
-o ADDRESS 
-o PHONE_NUMBER 
-
-## 2. BOOK 
-o BOOK_ID (PK) 
-o TITLE 
-o AUTHOR 
-o CATEGORY 
-o ISBN 
-o PUBLICATION_YEAR 
-
-## 3. AUTHOR (can be separate if more details are needed, or combined with Speaker) 
-o AUTHOR_ID (PK) 
-o NAME 
-o BIO 
-
-## 4. EVENT 
-o EVENT_ID (PK) 
-o EVENT_NAME 
-o DATE 
-o TIME 
-o DESCRIPTION 
-
-## 5. SPEAKER (can be SPEAKER/AUTHOR if they are the same entity) 
-o SPEAKER_ID (PK) 
-o NAME 
-o BIO 
-
-## 6. ROOM 
-o ROOM_ID (PK) 
-o ROOM_NUMBER 
-o CAPACITY 
-
-## 7. BORROWING (associative entity for book loans) 
-o BORROWING_ID (PK) 
-o LOAN_DATE 
-o RETURN_DATE 
-o DUE_DATE 
-o FINE_AMOUNT (derived attribute
+| Entity | Attributes (PK, FK) | Notes |
+|--------|--------------------|-------|
+|    Member    |      MemberID (PK), Name, Address, Phone, Email              |   Library members    |
+|      Book  |      BookID (PK), Title, Author, Category, ISBN, PubYear              |    Books in collection   |
+|    Loan    |        LoanID (PK), LoanDate, DueDate, ReturnDate, FineAmount, MemberID (FK), BookID (FK)            |     Tracks book borrowing  |
+|     Event   |         EventID (PK), Name, Description, EventDate, StartTime, EndTime, RoomID (FK)           |    Library cultural events   |
+|    Speaker    |         SpeakerID (PK), Name, Bio, ContactInfo           |    Event speakers/authors   |
+|      Booking  |             BookingID (PK), BookingDate, StartTime, EndTime, RoomID (FK), MemberID (FK)       |    Study room reservations   |
 
 ### Relationships and Constraints
 
-BORROWS (M:N): Requires MEMBER_ID (FK to MEMBER) and BOOK_ID (FK to BOOK).
-
-REGISTERS FOR (M:N): Requires MEMBER_ID (FK to MEMBER) and EVENT_ID (FK to EVENT).
-
-SPEAKS_AT (M:N): Requires EVENT_ID (FK to EVENT) and SPEAKER_ID (FK to SPEAKER).
-
-EVENT (1:N): Requires ROOM_ID (FK to ROOM).
-
-BOOK (1:N): Requires AUTHOR_ID (FK to AUTHOR).
+| Relationship | Cardinality | Participation | Notes |
+|--------------|------------|---------------|-------|
+|      Member–Book        |       M:N     |        Mandatory for Loan, Optional for Member/Book       |   Members borrow books    |
+|    Member–Event          |      M:N      |     Mandatory for Registration, Optional for Member/Event          |   Members register for events    |
+|   Event–Speaker  |      M:N      |    Mandatory for EventSpeaker, Optional for Event/Speaker |    Events may have multiple speakers   |
+|   Event–Room           |      1:N      |    Mandatory for Event, Optional for Room           |  Each event in one room     |
+|  Room–Booking            |      1:N   |      Mandatory for Booking, Optional for Room         |   Rooms booked for study by members    |
 
 ### Assumptions
+- Overdue fines are stored per Loan record.
+- BookCopy not modeled
+- Rooms serve both events and study bookings.
 
-- Single Author: A book has only one author.
-
-- Book Titles: BOOK entity represents a title, not a physical copy.
-
-- Mandatory Location: An EVENT must be assigned to one ROOM.
-
-- M:N Speakers: Events can have multiple speakers, and speakers can attend multiple events.
 ---
 
 # Scenario C: Restaurant Table Reservation & Ordering
@@ -191,91 +112,36 @@ A popular restaurant wants to manage reservations, orders, and billing.
 - Waiters assigned to serve reservations.
 
 ### ER Diagram:
-*Paste or attach your diagram here*  
-<img width="707" height="337" alt="image" src="https://github.com/user-attachments/assets/d4e3747d-3c16-47fa-9d19-3fec920091ac" />
+
+<img width="654" height="807" alt="Screenshot 2025-08-29 225323" src="https://github.com/user-attachments/assets/a66f572c-2469-4876-867e-74fe02d8478a" />
 
 
 ### Entities and Attributes
 
-## 1. CUSTOMER 
-o CUSTOMER_ID (PK) 
-o NAME 
-o PHONE_NO 
-o EMAIL 
-
-## 2. TABLE 
-o TABLE_NO (PK) 
-o CAPACITY 
-o LOCATION (e.g., window, corner) 
-o STATUS (e.g., available, occupied) 
-
-## 3. RESERVATION 
-o RESERVATION_ID (PK) 
-o RESERVATION_DATE 
-o RESERVATION_TIME 
-o NUM_GUESTS 
-o STATUS (e.g., confirmed, seated, cancelled) 
-
-## 4. ORDER 
-o ORDER_ID (PK) 
-o ORDER_DATE 
-o ORDER_TIME 
-o TOTAL_AMOUNT 
-o STATUS (e.g., pending, cooking, served, paid) 
-
-## 5. DISH 
-o DISH_ID (PK) 
-o DISH_NAME 
-o DESCRIPTION 
-o PRICE 
-o CATEGORY (Starter, Main, Dessert, Drink) 
-
-## 6. WAITER 
-o WAITER_ID (PK) 
-o NAME 
-o SHIFT 
-
-## 7. BILL 
-o BILL_ID (PK) 
-o BILL_DATE 
-o TOTAL_AMOUNT 
-o SERVICE_CHARGE 
-o TAX_AMOUNT 
-o PAYMENT_STATUS
+| Entity | Attributes (PK, FK) | Notes |
+|--------|--------------------|-------|
+|    Customer    | CustomerID (PK), Name, Email, Phone |  Stores customer info     |
+|   Waiter     | WaiterID (PK), Name, Shift, ContactInfo|   Waiter details    |
+|    Table    | TableID (PK), TableNumber, Capacity, Location  |Restaurant tables |
+|  Reservation   | ReservationID (PK), ReservationDate, ReservationTime, NoOfGuests, Status, CustomerID (FK), TableID (FK) | Table bookings|
+| Order       |  OrderID (PK), OrderDate, OrderTime, Status, ReservationID (FK)| Orders linked to reservations|
+| Dish       |  DishID (PK), DishName, Description, Price, CategoryID (FK)| Menu items|
+|  Bill      | BillID (PK), BillDate, TotalAmount, ServiceCharge, Tax, Status, ReservationID (FK)|Final bill per reservation|
+| Assignment       | AssignmentID (PK), WaiterID (FK), ReservationID (FK)|Resolves Waiter–Reservation|
 
 ### Relationships and Constraints
 
-RESERVATION (1:N): This table is central and requires three Foreign Keys:
-
-CUSTOMER_ID (FK to CUSTOMER)
-
-TABLE_ID (FK to TABLE)
-
-WAITER_ID (FK to WAITER)
-
-ORDER (1:N): Requires RESERVATION_ID (FK to RESERVATION).
-
-BILL (1:1): Requires RESERVATION_ID (FK to RESERVATION, which must also be a UNIQUE key).
-
-ORDER_ITEM (M:N): Requires ORDER_ID (FK to ORDER) and DISH_ID (FK to DISH).
+| Relationship | Cardinality | Participation | Notes |
+|--------------|------------|---------------|-------|
+|  Customer–Reservation            |   1:N         |  Mandatory for Reservation, Optional for Customer             |   One customer can have many reservations    |
+|  Reservation–Table            |    1:N        |  Mandatory for Reservation, Optional for Table             |  Each reservation is for one table     |
+|   Order–Dish           |      M:N      |    Mandatory for Order_Item, Optional for Order/Dish   |  An order can include many dishes     |
+|   Reservation–Bill           |  1:1          | Mandatory for Bill, Optional for Reservation              | One bill per reservation      |
+|   Waiter–Reservation           |   M:N         | Mandatory for Assignment, Optional for Waiter/Reservation              | Multiple waiters can serve a reservation      |
 
 ### Assumptions
+- Walk-in customers are still recorded
+- One bill per reservation
+- Split payments not modeled; could extend with a Payment entity.
 
-- One Table per Reservation: A single reservation cannot reserve multiple tables.
-
-- One Waiter per Reservation: A reservation is the responsibility of a single waiter.
-
-- No Split Bills: A reservation generates exactly one bill.
-
-- Mandatory Links: A RESERVATION record cannot exist without a CUSTOMER, TABLE, and WAITER.
-
-- Time Conflicts: The schema itself does not prevent booking the same TABLE at the same time. This logic must be enforced by the application.
 ---
-
-## Instructions for Students
-
-1. Complete **all three scenarios** (A, B, C).  
-2. Identify entities, relationships, and attributes for each.  
-3. Draw ER diagrams using **draw.io / diagrams.net** or hand-drawn & scanned.  
-4. Fill in all tables and assumptions for each scenario.  
-5. Export the completed Markdown (with diagrams) as **a single PDF**
